@@ -27,10 +27,14 @@ Route::prefix('laragig')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
 
+    Route::get('listings', [ListingController::class, 'index']);
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('user', [AuthController::class, 'user']);
-        Route::apiResource('listings', ListingController::class);
+        Route::resource('listings', ListingController::class)->only([
+            'show', 'store', 'update', 'destroy'
+        ]);
         Route::post('upload', [ImageController::class, 'upload']);
     });
 });
