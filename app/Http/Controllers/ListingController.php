@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\ListingResource;
 
 class ListingController extends Controller
 {
     public function index()
     {
-        return Listing::all();
+        $listings = Listing::paginate();
+
+        return ListingResource::collection($listings);
     }
 
     public function store(Request $request)
