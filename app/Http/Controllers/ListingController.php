@@ -9,11 +9,15 @@ use App\Http\Resources\ListingResource;
 
 class ListingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $listings = Listing::paginate();
+        $query = Listing::query();
 
-        return ListingResource::collection($listings);
+        if ($q = $request->input('q')) {
+            $query->whereRaw("title LIKE '%{$q}%'")->orWhereRaw("description LIKE '%{$q}%'");
+        }
+
+        return ListingResource::collection($query->paginate());
     }
 
     public function store(Request $request)
